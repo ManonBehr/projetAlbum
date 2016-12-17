@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+	<persistence-unit name="EssaiJPA" transaction-type="RESOURCE_LOCAL">
+		<non-jta-data-source>albumDS</non-jta-data-source>
+<!-- 		nom de la source de bd declarée ds tomEE.xml
+ --><!-- 		toutes les classes déclares entity
+ -->		<class>fr.uga.miashs.album.model.Album</class>
+		<class>fr.uga.miashs.album.model.AppUser</class>
+		<class>fr.uga.miashs.album.model.Picture</class>
+		
+		<!-- openjpa est une implementation de jpa, il en existe d'autre -->
+	<properties>
+<!-- 	toutes mes ables vont estre crées dans un fichier app
+ -->		<property name="openjpa.jdbc.Schema" value="app"/>
+<!--  permet de creer des tables automatiquement qd elles n'existent pas
+ --> 
+		<property name='openjpa.jdbc.SynchronizeMappings' value='buildSchema(ForeignKeys=true)' />
+	</properties>
+	</persistence-unit>
+
+</persistence>

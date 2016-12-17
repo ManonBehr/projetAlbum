@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+<h:body>
+
+	<h:form>
+		<p:outputLabel for="titre" value="Titre : " />
+		<p:inputText id="titre" value="#{albumController.album.title}" 
+			title="Renseignez le titre de l'album"/>
+			<!-- validator="#{ajoutAlbum.validerNomAlbum}" -->
+		<br/>
+		<p:outputLabel for="description" value="Description : " />
+		<p:inputText id="description" value="#{albumController.album.description}" 
+			title="Donnez une description de l'album"/>
+			<!-- validator="#{ajoutAlbum.validerZip}"  -->
+		<br/>
+		<!-- <p:outputLabel for="photo" value="Photo" />
+		<p:inputText id="lastname" value="#{appUserController.user.lastname}" 
+			title="Donnez votre nom"/>
+		
+		<p:commandButton action="#{albumController.createAlbum()}" value="Ajoutez la photo"/> -->
+	</h:form>
+	
+</h:body>
+
+</html>

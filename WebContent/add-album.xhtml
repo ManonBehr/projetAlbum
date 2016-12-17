@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	
+<h:head/>
+<h:body>
+
+	<h:form enctype="multipart/form-data">
+		<p:outputLabel for="titreAlbum" value="Titre de l'album : " />
+		<p:inputText id="titreAlbum" value="#{albumController.album.title}"
+			title="Renseignez le titre de l'album" />
+		<!-- validator="#{ajoutAlbum.validerNomAlbum}" -->
+		<br />
+		<p:outputLabel for="descriptionAlbum" value="Description : " />
+		<p:inputText id="descriptionAlbum"
+			value="#{albumController.album.description}"
+			title="Donnez une description de l'album" />
+		<!-- validator="#{ajoutAlbum.validerZip}"  -->
+		<br />
+
+		<!-- on veut ajouter une photo à la création de l'album -->
+
+
+		<!-- <p:outputLabel for="ajoutPhoto" value="Ajouter une photo à l'album : " />
+		<h:fileUpload id="ajoutPhoto" title="Choisissez une photo à ajouter" />
+		<br />
+		<p:outputLabel for="titrePhoto" value="Titre de la photo : " />
+		<p:inputText id="titrePhoto" title="Renseignez le titre de la photo" />
+		<br /> -->
+
+		<p:commandButton action="#{albumController.createAlbum()}"
+			value="Créer l'album" />
+	</h:form>
+
+</h:body>
+
+</html>
