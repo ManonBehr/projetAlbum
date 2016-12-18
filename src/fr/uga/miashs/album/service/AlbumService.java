@@ -6,11 +6,10 @@ import javax.persistence.Query;
 
 import fr.uga.miashs.album.model.Album;
 import fr.uga.miashs.album.model.AppUser;
+import fr.uga.miashs.album.model.Picture;
 
 
 public class AlbumService extends JpaService<Long,Album> {
-	
-
 	
 //peut etre des erreurs à capter
 	public void create(Album a) throws ServiceException {
@@ -25,5 +24,4 @@ public class AlbumService extends JpaService<Long,Album> {
 		query.setParameter("owner", getEm().merge(a));
 		return query.getResultList();
 	}
-	
 }

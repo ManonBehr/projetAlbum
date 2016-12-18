@@ -15,12 +15,9 @@
 			<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
 		        <p:tab title="#{alb.title} : #{alb.description}">
 		        <p:commandButton value="Ajout" onclick="PF('modal_ajout_photo').show();" action="#{albumController.setCurrentAlbum(alb)}"/>
-		            <h:panelGrid columns="2" cellpadding="5">
-		                <f:facet name="header">
-		                    <p:graphicImage name="demo/images/car/#{car.brand}-big.gif" />
-		                </f:facet>                    
-		                
-		            </h:panelGrid>
+		        <p:galleria value="#{album.pictures}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
+    				<p:graphicImage name="/home/manon/Bureau/workspace/ProjetAlbum2016/photos/#{picture}" alt="Image Description for #{picture}" title="#{picture}"/>
+				</p:galleria>
 		        </p:tab>
 	    	</p:accordionPanel>
 		</h:form>
@@ -30,7 +27,8 @@
 				<br/>
 				<p:fileUpload value="#{albumController.file}" mode="simple" skinSimple="true"/>
 				<br/>
-				<p:commandButton value="Ajouter" actionListener="#{albumController.upload}" disabled="false" ajax="false"/>
+				
+				<p:commandButton value="Ajouter" action="#{pictureController.createPicture}" actionListener="#{albumController.upload}" ajax="false"/>
 			</h:form>
 		</p:dialog>
 		

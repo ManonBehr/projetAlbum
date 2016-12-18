@@ -8,21 +8,30 @@ import javax.inject.Inject;
 import fr.uga.miashs.album.model.Album;
 import fr.uga.miashs.album.model.Picture;
 import fr.uga.miashs.album.service.AlbumService;
+import fr.uga.miashs.album.service.PictureService;
+import fr.uga.miashs.album.service.ServiceException;
 
 public class PictureController {
 
 	@Inject
 	private AppUserSession appUserSession;
-	
-	@Inject
-	private AlbumService albumService;
 
+	@Inject
+	private PictureService pictureService;
 	
 	private Album album;
 	
 	private Picture picture;
 	
 	public PictureController() {
+	}
+	
+	public void createPicture(){
+		try {
+			pictureService.createP(picture);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Picture getPicture() {
@@ -35,5 +44,6 @@ public class PictureController {
 		}
 		return picture;
 	}
+	
 
 }

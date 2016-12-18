@@ -92,8 +92,11 @@ public class Album {
 			pictures = new HashSet<Picture>();
 		Picture pict = new Picture();
 		pict.setPath(cheminLocal);
+		pict.setPictAlbum(this);
 		pictures.add(pict);
-		System.out.println("photo ajoutée");
+		System.out.println("photo " + cheminLocal + " ajoutée");
+		for (Picture p : pictures)
+			System.out.println("pictures : " + p.getLocalfile());
 		return pict;
 	}
 	

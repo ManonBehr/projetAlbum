@@ -8,14 +8,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
+import javax.enterprise.context.*;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.FileUploadEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import fr.uga.miashs.album.model.Album;
@@ -25,8 +23,8 @@ import fr.uga.miashs.album.util.Pages;
 
 @ManagedBean
 @Named
-@RequestScoped
-public class AlbumController {
+@SessionScoped
+public class AlbumController implements Serializable {
 
 	@Inject
 	private AppUserSession appUserSession;
@@ -59,29 +57,41 @@ public class AlbumController {
 		try {
 			albumService.create(album);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return Pages.list_album;
 	}
-	
-//	public String createAlbum(Path cheminPhoto) {
-//		try {
-//			album.addPicture(cheminPhoto);
-//			albumService.create(album);
-//			
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return Pages.list_album;
-//	}
-	
+
 	
 	public void setCurrentAlbum(Album alb) {
 		currentAlbum = alb;
-		System.out.println("alb courant " + currentAlbum.getTitle());
 	}
+	
+//	public void upload(FileUploadEvent event) throws IOException {
+//		String file_name = event.getFile().getFileName();
+//		Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/photos/", file_name);
+//		OutputStream out = null;
+//		InputStream in = null;
+//		try {
+//			 out = Files.newOutputStream(f);
+//			 in = event.getFile().getInputstream();
+//			 byte[] buf = new byte[512];
+//			 int nb = 0;
+//			 while ((nb = in.read(buf)) != -1)
+//				 out.write(buf, 0, nb);
+//			 
+//		} catch (NoSuchFileException e) {
+//			System.err.println("le fichier " + file_name + " n'existe pas");
+//		}
+//		finally {
+//			if (in != null)
+//				in.close();
+//			if (out != null)
+//				out.close();
+//		}	
+//		currentAlbum.addPicture(f.toString());
+//		 	
+//	}
 	
 	public void upload() throws IOException {
 		if(file != null){
@@ -106,12 +116,8 @@ public class AlbumController {
 				if (out != null)
 					out.close();
 			}
-			System.out.println("chemin local " + f.toString());
 			currentAlbum.addPicture(f.toString());
-			System.out.println("alb courrant " + currentAlbum.getTitle());
-			System.out.println("l'album contient : " + album.getPictures());
-		} 
-		
+		} 	
 	}
 	
 	public List<Album> getListAlbumOwnedByCurrentUser() {
