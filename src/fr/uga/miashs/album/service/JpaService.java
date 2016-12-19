@@ -14,7 +14,7 @@ import javax.persistence.PersistenceUnit;;
 
 
 /*
- * On a choisi ApplicationScoped car une seule instance de chque service suffit à l'application
+ * On a choisi ApplicationScoped car une seule instance de chaque service suffit à l'application
  * Ce choix de reporte sur toute les sous classes
  * Si on ne met rien @RequestScoped est choisi par défaut
  */

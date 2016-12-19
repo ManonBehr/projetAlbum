@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -41,7 +43,7 @@ public class Album {
 	@ManyToMany
 	private Set<AppUser> sharedWith;
 	
-	@OneToMany(mappedBy="album")
+	@OneToMany(mappedBy="album", cascade = CascadeType.ALL)
 	private Set<Picture> pictures;
 
 	protected Album() {
@@ -87,17 +89,14 @@ public class Album {
 		return pictures;
 	}
 	
-	public Picture addPicture(String cheminLocal){
+	public Picture addPicture(Picture picture){
 		if(pictures == null)
 			pictures = new HashSet<Picture>();
-		Picture pict = new Picture();
-		pict.setPath(cheminLocal);
-		pict.setPictAlbum(this);
-		pictures.add(pict);
-		System.out.println("photo " + cheminLocal + " ajoutée");
+		pictures.add(picture);
+		System.out.println("photo " + picture + " ajoutée");
 		for (Picture p : pictures)
 			System.out.println("pictures : " + p.getLocalfile());
-		return pict;
+		return picture;
 	}
 	
 	

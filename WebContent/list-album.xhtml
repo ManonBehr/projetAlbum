@@ -27,8 +27,7 @@
 				<br/>
 				<p:fileUpload value="#{albumController.file}" mode="simple" skinSimple="true"/>
 				<br/>
-				
-				<p:commandButton value="Ajouter" action="#{pictureController.createPicture}" actionListener="#{albumController.upload}" ajax="false"/>
+				<p:commandButton value="Ajouter" actionListener="#{albumController.upload}" ajax="false"/>
 			</h:form>
 		</p:dialog>
 		

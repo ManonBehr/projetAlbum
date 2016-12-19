@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.CascadeType;
 import javax.validation.constraints.NotNull;
 
 import fr.uga.miashs.album.service.PictureService;
@@ -23,6 +24,7 @@ public class Picture {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
+	@NotNull
 	@ManyToOne
 	private Album album;
 	

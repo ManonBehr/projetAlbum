@@ -6,7 +6,6 @@ import javax.persistence.Query;
 
 import fr.uga.miashs.album.model.Album;
 import fr.uga.miashs.album.model.AppUser;
-import fr.uga.miashs.album.model.Picture;
 
 
 public class AlbumService extends JpaService<Long,Album> {

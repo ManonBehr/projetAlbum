@@ -17,7 +17,9 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
 import fr.uga.miashs.album.model.Album;
+import fr.uga.miashs.album.model.Picture;
 import fr.uga.miashs.album.service.AlbumService;
+import fr.uga.miashs.album.service.PictureService;
 import fr.uga.miashs.album.service.ServiceException;
 import fr.uga.miashs.album.util.Pages;
 
@@ -31,7 +33,8 @@ public class AlbumController implements Serializable {
 	
 	@Inject
 	private AlbumService albumService;
-
+	@Inject
+	private PictureService pictureService;
 	
 	private Album album;
 	private Album currentAlbum;
@@ -61,7 +64,13 @@ public class AlbumController implements Serializable {
 		}
 		return Pages.list_album;
 	}
-
+	public void createPicture(Picture picture){
+		try {
+			pictureService.createP(picture);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void setCurrentAlbum(Album alb) {
 		currentAlbum = alb;
@@ -116,7 +125,11 @@ public class AlbumController implements Serializable {
 				if (out != null)
 					out.close();
 			}
-			currentAlbum.addPicture(f.toString());
+			Picture pict = new Picture();
+			pict.setPath(f.toString());
+			pict.setPictAlbum(currentAlbum);
+			currentAlbum.addPicture(pict);
+			this.createPicture(pict);
 		} 	
 	}
 	

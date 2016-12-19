@@ -16,8 +16,7 @@ public class PictureController {
 	@Inject
 	private AppUserSession appUserSession;
 
-	@Inject
-	private PictureService pictureService;
+	
 	
 	private Album album;
 	
@@ -26,13 +25,7 @@ public class PictureController {
 	public PictureController() {
 	}
 	
-	public void createPicture(){
-		try {
-			pictureService.createP(picture);
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
-	}
+
 	
 	public Picture getPicture() {
 		if (album==null) {
