@@ -1,5 +1,6 @@
 package fr.uga.miashs.album.model;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name="Album.findAllOwned",
                 query="SELECT a FROM Album a WHERE a.owner=:owner"),
 })
-public class Album {
+public class Album implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -93,7 +94,6 @@ public class Album {
 		if(pictures == null)
 			pictures = new HashSet<Picture>();
 		pictures.add(picture);
-		System.out.println("photo " + picture + " ajoutée");
 		for (Picture p : pictures)
 			System.out.println("pictures : " + p.getLocalfile());
 		return picture;

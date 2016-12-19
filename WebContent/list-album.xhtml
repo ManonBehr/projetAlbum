@@ -9,30 +9,33 @@
 
 	<h:head/>
 	<h:body>
-
-		<h1>AlbumList</h1>
-		<h:form>
-			<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
-		        <p:tab title="#{alb.title} : #{alb.description}">
-		        <p:commandButton value="Ajout" onclick="PF('modal_ajout_photo').show();" action="#{albumController.setCurrentAlbum(alb)}"/>
-		        <p:galleria value="#{album.pictures}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
-    				<p:graphicImage name="/home/manon/Bureau/workspace/ProjetAlbum2016/photos/#{picture}" alt="Image Description for #{picture}" title="#{picture}"/>
-				</p:galleria>
-		        </p:tab>
-	    	</p:accordionPanel>
-		</h:form>
-		<p:dialog header="Ajouter une photo" widgetVar="modal_ajout_photo" modal="true" height="100">
-			<h:form enctype="multipart/form-data">
-				<p:outputLabel>Nom de la photo</p:outputLabel><p:inputText type="text"/>
-				<br/>
-				<p:fileUpload value="#{albumController.file}" mode="simple" skinSimple="true"/>
-				<br/>
-				<p:commandButton value="Ajouter" actionListener="#{albumController.upload}" ajax="false"/>
+		<div style="width: 50%; margin:0 auto;">
+			<h1 style="padding-left: 100px;">Gestionnaire d'Albums photo</h1>
+			<h2>Liste des Albums</h2>
+			<h:form>
+				<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
+			        <p:tab title="#{alb.title} : #{alb.description}">
+			        <p:commandButton value="Supprimer l'album" actionListener="#{albumController.deleteAlbum()}"/>
+			        <p:galleria value="#{album.pictures}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
+	    				<p:graphicImage name="/home/manon/Bureau/workspace/ProjetAlbum2016/photos/git.png" alt="Image Description for #{picture}" title="#{picture}"/>
+					</p:galleria>
+					<p:spacer height="30" />
+					<p:commandButton value="Ajouter une photo" id="ajout" onclick="PF('modal_ajout_photo').show();" action="#{albumController.setCurrentAlbum(alb)}"/>
+			        </p:tab>
+		    	</p:accordionPanel>
 			</h:form>
-		</p:dialog>
-		
-		<p:commandButton action="add-album.xhtml" value="Ajouter un album" />
-		
+			<p:dialog header="Ajouter une photo" widgetVar="modal_ajout_photo" modal="true" height="100">
+				<h:form enctype="multipart/form-data">
+					<p:outputLabel>Nom de la photo</p:outputLabel><p:inputText type="text"/>
+					<br/>
+					<p:fileUpload value="#{albumController.file}" mode="simple" skinSimple="true"/>
+					<br/>
+					<p:commandButton value="Ajouter" id="upload" actionListener="#{albumController.upload}" ajax="false"/>
+				</h:form>
+			</p:dialog>
+			
+			<p:commandButton action="add-album.xhtml" value="Ajouter un album" />
+		</div>
 	</h:body>
 
 </html>

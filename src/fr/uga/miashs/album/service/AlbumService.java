@@ -17,6 +17,10 @@ public class AlbumService extends JpaService<Long,Album> {
 		super.create(a);
 	}
 	
+	public void delete(Album a) {
+		super.deleteById(a.getId());
+	}
+	
 	public List<Album> listAlbumOwnedBy(AppUser a) throws ServiceException {
 		//La requete est définie dans la classe Album grâce à une annotation
 		Query query = getEm().createNamedQuery("Album.findAllOwned");

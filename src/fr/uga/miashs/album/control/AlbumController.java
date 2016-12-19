@@ -64,6 +64,12 @@ public class AlbumController implements Serializable {
 		}
 		return Pages.list_album;
 	}
+	
+	public void deleteAlbum(){
+		System.out.println("id de l'album " + album.getId());
+		albumService.delete(album);
+	}
+	
 	public void createPicture(Picture picture){
 		try {
 			pictureService.createP(picture);
@@ -98,7 +104,11 @@ public class AlbumController implements Serializable {
 //			if (out != null)
 //				out.close();
 //		}	
-//		currentAlbum.addPicture(f.toString());
+//		Picture pict = new Picture();
+//		pict.setPath(f.toString());
+//		pict.setPictAlbum(currentAlbum);
+//		currentAlbum.addPicture(pict);
+//		//this.createPicture(pict);
 //		 	
 //	}
 	
@@ -125,11 +135,10 @@ public class AlbumController implements Serializable {
 				if (out != null)
 					out.close();
 			}
-			Picture pict = new Picture();
-			pict.setPath(f.toString());
-			pict.setPictAlbum(currentAlbum);
+			Picture pict = new Picture("default_title", f.toUri(), f.toString());
+			//pict.setPictAlbum(currentAlbum);
 			currentAlbum.addPicture(pict);
-			this.createPicture(pict);
+			createPicture(pict);
 		} 	
 	}
 	

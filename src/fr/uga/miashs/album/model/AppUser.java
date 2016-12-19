@@ -7,6 +7,7 @@ package fr.uga.miashs.album.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-//@Entity devant la declaration d'une classe devient une entité jpa, il faut au moins un attribut avec @id
+//@Entity devant la declaration d'une classe devient une entitï¿½ jpa, il faut au moins un attribut avec @id
 //@nameQuery query= langage jpql
 @Entity 
 @NamedQueries({
@@ -32,8 +33,8 @@ import javax.validation.constraints.Pattern;
 @Table(uniqueConstraints=@UniqueConstraint(columnNames="email"))
 public class AppUser {
 	
-	//qd on ont veut inserer un utilistatur, la clé primaire sera automatiquement génére par la bd
-	// on prefere long pour une clé primaire
+	//qd on ont veut inserer un utilistatur, la clï¿½ primaire sera automatiquement gï¿½nï¿½re par la bd
+	// on prefere long pour une clï¿½ primaire
 	//constructeur public sans param
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,7 +57,7 @@ public class AppUser {
 	@NotNull
 	private String password;
 	
-	@OneToMany(mappedBy="owner")
+	@OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
 	private List<Album> userAlbums;
 
 	public AppUser() {
