@@ -22,7 +22,9 @@ import javax.validation.constraints.NotNull;
 @NamedQueries({
     @NamedQuery(name="Album.findAllOwned",
                 query="SELECT a FROM Album a WHERE a.owner=:owner"),
-})
+}
+
+		)
 public class Album implements Serializable {
 	
 	@Id
@@ -38,7 +40,7 @@ public class Album implements Serializable {
 	//proprio de l'album, @ManyToOne nécessaire pour dire qu'un owner peut avoir plusieurs albums
 	//et un album un seul owner
 	@NotNull
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	private AppUser owner;
 	
 	@ManyToMany

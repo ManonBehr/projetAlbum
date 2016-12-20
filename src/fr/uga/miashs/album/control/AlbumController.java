@@ -70,9 +70,9 @@ public class AlbumController implements Serializable {
 		albumService.delete(album);
 	}
 	
-	public void createPicture(Picture picture){
+	public void createPicture(Picture picture, Album alb){
 		try {
-			pictureService.createP(picture);
+			pictureService.createP(picture, alb);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
@@ -138,7 +138,8 @@ public class AlbumController implements Serializable {
 			Picture pict = new Picture("default_title", f.toUri(), f.toString());
 			//pict.setPictAlbum(currentAlbum);
 			currentAlbum.addPicture(pict);
-			createPicture(pict);
+			createPicture(pict, currentAlbum);
+			
 		} 	
 	}
 	
