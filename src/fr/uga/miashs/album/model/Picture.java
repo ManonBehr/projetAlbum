@@ -14,10 +14,18 @@ import javax.persistence.NamedQuery;
 import javax.persistence.CascadeType;
 import javax.validation.constraints.NotNull;
 
+import org.primefaces.model.StreamedContent;
+
 import fr.uga.miashs.album.service.PictureService;
 import fr.uga.miashs.album.service.ServiceException;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Picture.findAllPicture",
+                query="SELECT p FROM Picture p WHERE p.album=:album"),
+}
+
+		)
 public class Picture {
 
 	@Id
@@ -37,22 +45,35 @@ public class Picture {
 	@NotNull
 	private String localfile;
 	
+	@NotNull
+	private String filename;
+	
 	public Picture(){
 	}
 	
 
-	public Picture(String titre, URI chemin, String cheminLocal) {
+	public Picture(String titre, URI chemin, String cheminLocal, String nomfichier) {
 		title = titre;
 		uri = chemin;
 		localfile = cheminLocal;
+		filename = nomfichier;
 	}
-	
+
+
 	public String getLocalfile() {
 		return localfile;
 	}
 	
 	public Album getPictAlbum(){
 		return album;
+	}
+	
+	public String getFileName(){
+		return filename;
+	}
+	
+	public long getId(){
+		return id;
 	}
 	
 	public void setPictAlbum(Album album){
@@ -62,6 +83,5 @@ public class Picture {
 	public void setPath(String p){
 		localfile=p;
 	}
-	
 	
 }

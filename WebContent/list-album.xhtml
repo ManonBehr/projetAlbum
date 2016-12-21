@@ -7,8 +7,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 
-	<h:head/>
+	<h:head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.7/css/lightgallery.css" /></h:head>
 	<h:body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.3.7/js/lightgallery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
 		<div style="width: 50%; margin:0 auto;">
 			<h1 style="padding-left: 100px;">Gestionnaire d'Albums photo</h1>
 			<h2>Liste des Albums</h2>
@@ -16,10 +19,18 @@
 				<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
 			        <p:tab title="#{alb.title} : #{alb.description}">
 			        <p:commandButton value="Supprimer l'album" actionListener="#{albumController.deleteAlbum()}"/>
-			        <p:galleria value="#{album.pictures}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
-	    				<p:graphicImage name="/home/manon/Bureau/workspace/ProjetAlbum2016/photos/git.png" alt="Image Description for #{picture}" title="#{picture}"/>
+			        <p:galleria value="#{albumController.listPictureOwnedByCurrentAlbum}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
+	    				<p:graphicImage value="photos/#{picture}" alt="Nom du fichier : #{picture}" title="#{picture}"/>
 					</p:galleria>
-					<p:spacer height="30" />
+				    <div id="lightgallery">
+				    <h:outputText value="#{albumController.listPictureOwnedByCurrentAlbum}"/>
+				    <c:forEach items="#{albumController.listPictureOwnedByCurrentAlbum}" var="pic">
+				   		<a href="/ProjetAlbum/faces/javax.faces.resource/#{pic}?ln=photos">
+				          <h:graphicImage library="photos" name="#{pic}" alt="#{pic}"/>
+				    	</a>
+				    </c:forEach>
+				    </div>
+				<p:spacer height="30" />
 					<p:commandButton value="Ajouter une photo" id="ajout" onclick="PF('modal_ajout_photo').show();" action="#{albumController.setCurrentAlbum(alb)}"/>
 			        </p:tab>
 		    	</p:accordionPanel>
@@ -36,6 +47,11 @@
 			
 			<p:commandButton action="add-album.xhtml" value="Ajouter un album" />
 		</div>
+	    <script type="text/javascript">
+	        $(document).ready(function() {
+	            $("#lightgallery").lightGallery(); 
+	        });
+	    </script>
 	</h:body>
 
 </html>

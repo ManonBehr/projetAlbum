@@ -23,27 +23,30 @@ public class LoginFilter implements Filter {
 
 	@Inject
 	private AppUserSession appUserSession;
-	public String[] filteredPages;
-    
+
+	public String[] filteredPagesNoLogin;
+	public String[] filteredPagesUser;
+
+	public String[] filteredPagesAdmin;
+
 	/**
-     * Default constructor. 
-     */
-    public LoginFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	 * Default constructor.
+	 */
+	public LoginFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		//toutes les pages qu'on veut filtrer, on peut en ajouter
-		filteredPages = new String[] {
-				Pages.add_album,
-				Pages.list_album
-		};
+		// toutes les pages qu'on veut filtrer, on peut en ajouter
+		filteredPagesNoLogin = new String[] { Pages.add_album, Pages.list_album, Pages.add_user };
+		filteredPagesAdmin = new String[] { Pages.add_album, Pages.list_album };
+		filteredPagesUser = new String[] { Pages.list_user };
+
 	}
-	
-	
+
 	/**
 	 * @see Filter#destroy()
 	 */
@@ -54,23 +57,41 @@ public class LoginFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		
-		String requestedUri = ((HttpServletRequest) request).getRequestURI().substring(((HttpServletRequest) request).getContextPath().length()+1);
-		for (String s : filteredPages) {
-			if (s.equals(requestedUri)) {
-				 if (appUserSession == null || 
-						 appUserSession.getConnectedUser()==null) {
-//					 si il n'y a pas de session ouverte alors toutes les pages mènent à la page d'accueil
-					 request.getRequestDispatcher(Pages.accueil).forward(request, response);
-				 }
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		String requestedUri = ((HttpServletRequest) request).getRequestURI()
+				.substring(((HttpServletRequest) request).getContextPath().length() + 1);
+
+		if (appUserSession != null && appUserSession.getConnectedUser() != null
+				&& appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
+			for (String s : filteredPagesAdmin)
+				if (s.equals(requestedUri))
+					request.getRequestDispatcher(Pages.list_user).forward(request, response);
+		}
+
+		if (appUserSession != null && appUserSession.getConnectedUser() != null
+				&& !appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
+			System.out.println("user connecte"+ appUserSession.getConnectedUser().getEmail());
+			for (String s : filteredPagesUser) {
+				if (s.equals(requestedUri))
+					request.getRequestDispatcher(Pages.list_album).forward(request, response);
 			}
+		}
+
+		for (String s : filteredPagesNoLogin) {
+			if (s.equals(requestedUri)) {
+				if (appUserSession == null || appUserSession.getConnectedUser() == null) {
+					// si il n'y a pas de session ouverte alors toutes les
+					// pages mènent à la page d'accueil
+					request.getRequestDispatcher(Pages.accueil).forward(request, response);
+				}
+			}
+
 		}
 
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}
-
-
 
 }

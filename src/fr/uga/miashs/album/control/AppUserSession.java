@@ -18,6 +18,7 @@ import fr.uga.miashs.album.util.Pages;
 
 /**
  * NamedBean pour la gestion de la session utilisateur et de la page de login.
+ * 
  * @author jdavid
  *
  */
@@ -27,37 +28,43 @@ public class AppUserSession implements Serializable {
 
 	@Inject
 	private AppUserService appUserService;
-	
+
 	@Inject
 	private AlbumService albumService;
-	
+
 	private String email;
 	private String password;
-	
+
 	private Album currentAlbum;
 	private AppUser connectedUser;
-	
+
 	public String login() {
-		
 		try {
-			connectedUser = appUserService.login(email, password);
+				connectedUser = appUserService.login(email, password);
 		} catch (ServiceException e) {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			FacesMessage facesMessage = new FacesMessage("Email ou mot de passe incorrects");
+			FacesMessage facesMessage = new FacesMessage("Email ou mot de passe incorrects appuser");
 			// ajoute le message pour toute la page (1er param==null)
 			facesContext.addMessage(null, facesMessage);
 			return null;
 		}
-		return Pages.list_album;
+		if(email.equals("admin@admin.fr")){
+			System.out.println("admin se log");
+			return Pages.list_user;
+		}
+		else{
+			System.out.println("axel se log");
+			return Pages.list_album;
+		}
 	}
-	
+
 	public String logout() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		((HttpSession) context.getExternalContext().getSession(false)).invalidate();
-		connectedUser=null;
+		connectedUser = null;
 		return "";
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
@@ -73,7 +80,7 @@ public class AppUserSession implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public AppUser getConnectedUser() {
 		return connectedUser;
 	}

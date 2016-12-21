@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.*;
@@ -14,6 +15,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import fr.uga.miashs.album.model.Album;
@@ -115,7 +118,7 @@ public class AlbumController implements Serializable {
 	public void upload() throws IOException {
 		if(file != null){
 			String file_name = file.getFileName();
-			Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/photos/", file_name);
+			Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
 			OutputStream out = null;
 			InputStream in = null;
 			try {
@@ -135,7 +138,7 @@ public class AlbumController implements Serializable {
 				if (out != null)
 					out.close();
 			}
-			Picture pict = new Picture("default_title", f.toUri(), f.toString());
+			Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
 			//pict.setPictAlbum(currentAlbum);
 			currentAlbum.addPicture(pict);
 			createPicture(pict, currentAlbum);
@@ -147,11 +150,22 @@ public class AlbumController implements Serializable {
 		try {
 			return albumService.listAlbumOwnedBy(appUserSession.getConnectedUser());
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+	public List<String> getListPictureOwnedByCurrentAlbum() {
+		try {
+			List<Picture> allPictures = pictureService.listPictureOwnedBy(currentAlbum);
+			List<String> pictName = new ArrayList<String>();
+			for(int i=0; i<allPictures.size(); i++){
+				pictName.add(allPictures.get(i).getFileName());
+			}
+			return pictName;
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }
