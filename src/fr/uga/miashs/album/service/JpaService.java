@@ -76,6 +76,8 @@ public abstract class JpaService<K,V> implements GenericService<K,V>, Serializab
 	}
 	
 	public void deleteById(K id) {
+		System.out.println(id);
+
 		EntityTransaction t = em.getTransaction();
 		t.begin();
 		// getReference (contrairement à find) permet de charger seulement l'id

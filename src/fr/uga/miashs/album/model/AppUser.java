@@ -42,19 +42,19 @@ public class AppUser {
 	
  	
 	@Pattern(regexp="^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,6}$", message="{appuser.email.regex}")
-	@NotNull
+	@NotNull(message="{appuser.email.notnull}")
 	private String email;
 	
 	
 	
-	@NotNull
+	@NotNull(message="{appuser.lastname.notnull}")
 	private String lastname;
 	
 //	dans validation user.property il y a le message
 	@NotNull(message="{appuser.firstname.notnull}")
 	private String firstname;
 	
-	@NotNull
+	@NotNull(message="{appuser.password.notnull}")
 	private String password;
 	
 	@OneToMany(mappedBy="owner", cascade = CascadeType.ALL)

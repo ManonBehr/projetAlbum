@@ -83,68 +83,69 @@ public class AlbumController implements Serializable {
 	
 	public void setCurrentAlbum(Album alb) {
 		currentAlbum = alb;
+		System.out.println("alboum courant : " + currentAlbum.getId());
 	}
 	
-//	public void upload(FileUploadEvent event) throws IOException {
-//		String file_name = event.getFile().getFileName();
-//		Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/photos/", file_name);
-//		OutputStream out = null;
-//		InputStream in = null;
-//		try {
-//			 out = Files.newOutputStream(f);
-//			 in = event.getFile().getInputstream();
-//			 byte[] buf = new byte[512];
-//			 int nb = 0;
-//			 while ((nb = in.read(buf)) != -1)
-//				 out.write(buf, 0, nb);
-//			 
-//		} catch (NoSuchFileException e) {
-//			System.err.println("le fichier " + file_name + " n'existe pas");
-//		}
-//		finally {
-//			if (in != null)
-//				in.close();
-//			if (out != null)
-//				out.close();
-//		}	
-//		Picture pict = new Picture();
-//		pict.setPath(f.toString());
-//		pict.setPictAlbum(currentAlbum);
-//		currentAlbum.addPicture(pict);
-//		//this.createPicture(pict);
-//		 	
+	public void upload(FileUploadEvent event) throws IOException {
+		String file_name = event.getFile().getFileName();
+		Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
+		OutputStream out = null;
+		InputStream in = null;
+		try {
+			 out = Files.newOutputStream(f);
+			 in = event.getFile().getInputstream();
+			 byte[] buf = new byte[512];
+			 int nb = 0;
+			 while ((nb = in.read(buf)) != -1)
+				 out.write(buf, 0, nb);
+			 
+		} catch (NoSuchFileException e) {
+			System.err.println("le fichier " + file_name + " n'existe pas");
+		}
+		finally {
+			if (in != null)
+				in.close();
+			if (out != null)
+				out.close();
+		}
+		System.out.println("on upload, enfin ! ");
+		Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
+		System.out.println(currentAlbum.getTitle() + "titre");
+		currentAlbum.addPicture(pict);
+		createPicture(pict, currentAlbum);
+		 	
+	}
+	
+//	public void upload() throws IOException {
+//		if(file != null){
+//			String file_name = file.getFileName();
+//			Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
+//			OutputStream out = null;
+//			InputStream in = null;
+//			try {
+//				 out = Files.newOutputStream(f);
+//				 in = file.getInputstream();
+//				 byte[] buf = new byte[512];
+//				 int nb = 0;
+//				 while ((nb = in.read(buf)) != -1)
+//					 out.write(buf, 0, nb);
+//				 
+//			} catch (NoSuchFileException e) {
+//				System.err.println("le fichier " + file_name + " n'existe pas");
+//			}
+//			finally {
+//				if (in != null)
+//					in.close();
+//				if (out != null)
+//					out.close();
+//			}
+//			Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
+//			//pict.setPictAlbum(currentAlbum);
+//			currentAlbum.addPicture(pict);
+//			createPicture(pict, currentAlbum);
+//			
+//		} 	
 //	}
-	
-	public void upload() throws IOException {
-		if(file != null){
-			String file_name = file.getFileName();
-			Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
-			OutputStream out = null;
-			InputStream in = null;
-			try {
-				 out = Files.newOutputStream(f);
-				 in = file.getInputstream();
-				 byte[] buf = new byte[512];
-				 int nb = 0;
-				 while ((nb = in.read(buf)) != -1)
-					 out.write(buf, 0, nb);
-				 
-			} catch (NoSuchFileException e) {
-				System.err.println("le fichier " + file_name + " n'existe pas");
-			}
-			finally {
-				if (in != null)
-					in.close();
-				if (out != null)
-					out.close();
-			}
-			Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
-			//pict.setPictAlbum(currentAlbum);
-			currentAlbum.addPicture(pict);
-			createPicture(pict, currentAlbum);
-			
-		} 	
-	}
 	
 	public List<Album> getListAlbumOwnedByCurrentUser() {
 		try {
@@ -154,18 +155,28 @@ public class AlbumController implements Serializable {
 		}
 		return null;
 	}
-	public List<String> getListPictureOwnedByCurrentAlbum() {
-		try {
-			List<Picture> allPictures = pictureService.listPictureOwnedBy(currentAlbum);
-			List<String> pictName = new ArrayList<String>();
-			for(int i=0; i<allPictures.size(); i++){
-				pictName.add(allPictures.get(i).getFileName());
-			}
-			return pictName;
-		} catch (ServiceException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public List<String> getListPictureOwnedByCurrentAlbum(Album alb) {
+		//try {
+//			List<Picture> allPictures = pictureService.listPictureOwnedBy(alb);
+//			System.out.println("id de l'alb courant" + alb.getId());
+//			System.out.println("photos de l'alb courant : " + alb.getPictures());
+//			System.out.println("photos de allPictures : " + allPictures.toString());
+//			List<String> pictName = new ArrayList<String>();
+//			for(int i=0; i<allPictures.size(); i++){
+//				pictName.add(allPictures.get(i).getFileName());
+//			}
+//			return pictName;
+//		} catch (ServiceException e) {
+//			e.printStackTrace();
+//		}
+//		return null;
+		List<String> pictName = new ArrayList<String>();
+		pictName.add("astronomy.png");
+		pictName.add("compiling.png");
+		pictName.add("fish.png");
+		pictName.add("git.png");
+		return pictName;
 	}
+	
 	
 }

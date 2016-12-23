@@ -28,9 +28,9 @@ public class AppUserService extends JpaService<Long,AppUser> {
 				throw new ServiceException("Un utilisateur avec l'email "+v.getEmail()+" existe déjà",e);
 			}
 			else {
-				new ServiceException(e);
+				throw new ServiceException(e);
+
 			}
-			//System.out.println("coucou");
 		}
 	}
 

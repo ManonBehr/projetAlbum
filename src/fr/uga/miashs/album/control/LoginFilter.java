@@ -41,7 +41,7 @@ public class LoginFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		// toutes les pages qu'on veut filtrer, on peut en ajouter
-		filteredPagesNoLogin = new String[] { Pages.add_album, Pages.list_album, Pages.add_user };
+		filteredPagesNoLogin = new String[] { Pages.add_album, Pages.list_album, Pages.list_user };
 		filteredPagesAdmin = new String[] { Pages.add_album, Pages.list_album };
 		filteredPagesUser = new String[] { Pages.list_user };
 
@@ -63,19 +63,24 @@ public class LoginFilter implements Filter {
 		String requestedUri = ((HttpServletRequest) request).getRequestURI()
 				.substring(((HttpServletRequest) request).getContextPath().length() + 1);
 
-		if (appUserSession != null && appUserSession.getConnectedUser() != null
-				&& appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
-			for (String s : filteredPagesAdmin)
-				if (s.equals(requestedUri))
+		for (String s : filteredPagesAdmin) {
+			if (s.equals(requestedUri)) {
+				if (appUserSession != null && appUserSession.getConnectedUser() != null
+						&& appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
 					request.getRequestDispatcher(Pages.list_user).forward(request, response);
+					System.out.println(appUserSession.getConnectedUser().getEmail());
+				}
+			}
 		}
 
-		if (appUserSession != null && appUserSession.getConnectedUser() != null
-				&& !appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
-			System.out.println("user connecte"+ appUserSession.getConnectedUser().getEmail());
-			for (String s : filteredPagesUser) {
-				if (s.equals(requestedUri))
+		for (String s : filteredPagesUser) {
+			if (s.equals(requestedUri)) {
+				if (appUserSession != null && appUserSession.getConnectedUser() != null
+						&& !appUserSession.getConnectedUser().getEmail().equals("admin@admin.fr")) {
 					request.getRequestDispatcher(Pages.list_album).forward(request, response);
+					System.out.println(appUserSession.getConnectedUser().getEmail());
+
+				}
 			}
 		}
 
@@ -85,9 +90,9 @@ public class LoginFilter implements Filter {
 					// si il n'y a pas de session ouverte alors toutes les
 					// pages mènent à la page d'accueil
 					request.getRequestDispatcher(Pages.accueil).forward(request, response);
+					System.out.println("personne de connecté");
 				}
 			}
-
 		}
 
 		// pass the request along the filter chain

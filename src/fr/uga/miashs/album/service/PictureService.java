@@ -16,14 +16,16 @@ public class PictureService extends JpaService<Long, Picture>{
 	EntityManager em = getEm();
 	
 	public void createP(Picture p, Album a) throws ServiceException {
-		EntityTransaction t = em.getTransaction();
-		t.begin();
-		em.merge(p);
-		t.commit();
-		List<Picture> picturesIdToDelete = getPictureNull();
-		updatePicture(p, a);
-		for(int i=0; i<picturesIdToDelete.size(); i++)
-			deletePicture(picturesIdToDelete.get(i).getId());
+		super.create(p);
+//		EntityTransaction t = em.getTransaction();
+//		t.begin();
+//		em.merge(p);
+//		t.commit();
+//		System.out.println("on la crée, enfin ! ");
+//		List<Picture> picturesIdToDelete = getPictureNull();
+//		updatePicture(p, a);
+//		for(int i=0; i<picturesIdToDelete.size(); i++)
+//			deletePicture(picturesIdToDelete.get(i).getId());
 	}
 	
 	public void updatePicture(Picture p, Album a) {

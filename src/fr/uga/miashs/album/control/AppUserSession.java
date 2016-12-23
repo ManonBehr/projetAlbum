@@ -40,29 +40,34 @@ public class AppUserSession implements Serializable {
 
 	public String login() {
 		try {
-				connectedUser = appUserService.login(email, password);
+			connectedUser = appUserService.login(email, password);
+			System.out.println("user connecte" + connectedUser.getEmail());
 		} catch (ServiceException e) {
+			// affichage d'un message d'erreur si email/mdp invalides
 			FacesContext facesContext = FacesContext.getCurrentInstance();
-			FacesMessage facesMessage = new FacesMessage("Email ou mot de passe incorrects appuser");
+			FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erreur",
+					"Email et/ou mot de passe invalide");
 			// ajoute le message pour toute la page (1er param==null)
 			facesContext.addMessage(null, facesMessage);
 			return null;
 		}
-		if(email.equals("admin@admin.fr")){
+
+		if (email.equals("admin@admin.fr")) {
 			System.out.println("admin se log");
 			return Pages.list_user;
-		}
-		else{
-			System.out.println("axel se log");
+		} else {
+			System.out.println(connectedUser.getEmail() + " se log");
 			return Pages.list_album;
 		}
+
+
 	}
 
 	public String logout() {
 		FacesContext context = FacesContext.getCurrentInstance();
 		((HttpSession) context.getExternalContext().getSession(false)).invalidate();
 		connectedUser = null;
-		return "";
+		return Pages.login;
 	}
 
 	public String getEmail() {
