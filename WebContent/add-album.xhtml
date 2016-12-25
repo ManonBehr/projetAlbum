@@ -21,12 +21,10 @@
 				<p:inputText id="descriptionAlbum"
 					value="#{albumController.album.description}"
 					title="Donnez une description de l'album" />
-
+			</h:panelGrid>
 				<p:commandButton action="#{albumController.createAlbum()}"
 					value="Créer l'album" />
-				<p:commandButton action="add-album.xhtml"
-					value="Annuler" />
-			</h:panelGrid>
+			
 			
 		</h:form>
 		

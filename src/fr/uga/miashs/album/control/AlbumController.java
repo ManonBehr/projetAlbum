@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -41,7 +42,16 @@ public class AlbumController implements Serializable {
 	
 	private Album album;
 	private Album currentAlbum;
+	private String albId;
 	
+	
+	
+	public String getAlbId() {
+		return albId;
+	}
+	public void setAlbId(String albId) {
+		this.albId = albId;
+	}
 	private UploadedFile file;
 	
 	public UploadedFile getFile(){
@@ -68,9 +78,9 @@ public class AlbumController implements Serializable {
 		return Pages.list_album;
 	}
 	
-	public void deleteAlbum(){
-		System.out.println("id de l'album " + album.getId());
-		albumService.delete(album);
+	public void deleteAlbum(Album alb){
+		System.out.println("id de l'album à supprimer : " + alb.getId());
+		albumService.delete(alb);
 	}
 	
 	public void createPicture(Picture picture, Album alb){
@@ -147,6 +157,8 @@ public class AlbumController implements Serializable {
 //		} 	
 //	}
 	
+
+	
 	public List<Album> getListAlbumOwnedByCurrentUser() {
 		try {
 			return albumService.listAlbumOwnedBy(appUserSession.getConnectedUser());
@@ -155,27 +167,27 @@ public class AlbumController implements Serializable {
 		}
 		return null;
 	}
-	public List<String> getListPictureOwnedByCurrentAlbum(Album alb) {
-		//try {
-//			List<Picture> allPictures = pictureService.listPictureOwnedBy(alb);
-//			System.out.println("id de l'alb courant" + alb.getId());
-//			System.out.println("photos de l'alb courant : " + alb.getPictures());
-//			System.out.println("photos de allPictures : " + allPictures.toString());
-//			List<String> pictName = new ArrayList<String>();
-//			for(int i=0; i<allPictures.size(); i++){
-//				pictName.add(allPictures.get(i).getFileName());
-//			}
-//			return pictName;
-//		} catch (ServiceException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-		List<String> pictName = new ArrayList<String>();
-		pictName.add("astronomy.png");
-		pictName.add("compiling.png");
-		pictName.add("fish.png");
-		pictName.add("git.png");
-		return pictName;
+	public List<String> getListPictureOwnedByCurrentAlbum() {
+		try {
+			long id = Long.parseLong(albId);
+			List<Picture> allPictures = pictureService.listPictureOwnedBy(id);
+			//System.out.println("id de l'alb courant" + alb.getId());
+			List<String> pictName = new ArrayList<String>();
+			for(int i=0; i<allPictures.size(); i++){
+				pictName.add(allPictures.get(i).getFileName());
+				System.out.println("photos de l'album courant : " + pictName.get(i));
+			}
+			return pictName;
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		}
+		return null;
+//		List<String> pictName = new ArrayList<String>();
+//		pictName.add("tree.jpeg");
+//		pictName.add("squirrel.jpeg");
+//		pictName.add("pigs.jpg");
+//		pictName.add("cheval_meca.jpeg");
+//		return pictName;
 	}
 	
 	

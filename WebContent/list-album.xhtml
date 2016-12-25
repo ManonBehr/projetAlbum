@@ -14,18 +14,24 @@
 		<h:form>
 			<p:commandButton action="#{appUserSession.logout()}" value="Me déconnecter"/>
 		</h:form>
-		<c:forEach items="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
-			<p:outputLabel value="#{alb.title} : #{alb.description}"/>
-			<p:galleria value="#{albumController.getListPictureOwnedByCurrentAlbum(alb)}" var="picture" panelWidth="500" panelHeight="313" showCaption="true">
-    			<p:graphicImage value="resources/photos/#{picture}" alt="Nom du fichier : #{picture}" title="#{picture}"/>
-			</p:galleria>
-			<p:outputLabel value="#{albumController.getListPictureOwnedByCurrentAlbum(alb)}"/>
-			<p:spacer height="30"/>
-			<p:commandButton actionListener="#{albumController.setCurrentAlbum(alb)}" value="Mettre l'album à jour"/>
-			<h:form>
-    			<p:fileUpload fileUploadListener="#{albumController.upload}" mode="advanced" dragDropSupport="true" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
-			</h:form>
-		</c:forEach>
+		<h:form>
+			<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
+				<p:ajax event="tabChange" listener="#{albumController.setCurrentAlbum(alb)}"/>
+				<p:tab title="#{alb.title} : #{alb.description}">
+				<p:link outcome="album" value="Consulter les photos de l'album #{alb.title}">
+					<f:param name="albId" value="#{alb.id}"/>
+				</p:link>
+				<p:spacer height="30"/>
+				<h:form>
+	 				<p:fileUpload fileUploadListener="#{albumController.upload}" mode="advanced" dragDropSupport="true" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+				</h:form>
+				<p:spacer height="30"/>
+				<p:commandButton actionListener="#{albumController.deleteAlbum(alb)}" value="Supprimer cet Album"/>
+				</p:tab>				
+			</p:accordionPanel>
+		</h:form>		
+		<p:spacer height="30"/>
+		<p:commandButton value="Ajouter un album" action="add-album.xhtml"/>
 		</div>
 	</h:body>
 </html>

@@ -49,7 +49,7 @@ public class Album implements Serializable {
 	@OneToMany(mappedBy="album", cascade = CascadeType.ALL)
 	private Set<Picture> pictures;
 	
-	private Set<String> picturesName;
+	
 	
 	protected Album() {
 	}
@@ -95,6 +95,7 @@ public class Album implements Serializable {
 	}
 	
 	public Set<String> getPicturesName() {
+		Set<String> picturesName = new HashSet<String>();
 		for (Picture p : pictures)
 			picturesName.add(p.getFileName());
 		return picturesName;
