@@ -10,28 +10,33 @@
 	<h:body>
 		<div style="width: 50%; margin:0 auto;">
 		<h1 style="padding-left: 100px;">Gestionnaire d'Albums photo</h1>
+		<h:form>
+			<p:menubar>
+				<p:menuitem value="Ajouter un album" action="add-album.xhtml" />
+				<p:menuitem value="Rechercher photos" action="query-pictures.xhtml" />
+				<p:menuitem value="Me déconnecter" action="#{appUserSession.logout()}" />
+			</p:menubar>
+		</h:form>
 		<h2>Liste des Albums</h2>
 		<h:form>
-			<p:commandButton action="#{appUserSession.logout()}" value="Me déconnecter"/>
-		</h:form>
-		<h:form>
-			<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb">
+			<p:accordionPanel id="accordion" value="#{albumController.listAlbumOwnedByCurrentUser}" var="alb" activeIndex="-1">
 				<p:ajax event="tabChange" listener="#{albumController.setCurrentAlbum(alb)}"/>
 				<p:tab title="#{alb.title} : #{alb.description}">
 				<p:link outcome="album" value="Consulter les photos de l'album #{alb.title}">
 					<f:param name="albId" value="#{alb.id}"/>
 				</p:link>
 				<p:spacer height="30"/>
+				<h3>Ajouter des photos : </h3>
 				<h:form>
 	 				<p:fileUpload fileUploadListener="#{albumController.upload}" mode="advanced" dragDropSupport="true" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/>
+					
 				</h:form>
 				<p:spacer height="30"/>
+			        		
 				<p:commandButton actionListener="#{albumController.deleteAlbum(alb)}" value="Supprimer cet Album"/>
 				</p:tab>				
 			</p:accordionPanel>
-		</h:form>		
-		<p:spacer height="30"/>
-		<p:commandButton value="Ajouter un album" action="add-album.xhtml"/>
+		</h:form>
 		</div>
 	</h:body>
 </html>

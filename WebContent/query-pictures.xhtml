@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head/>
+	<h:body>
+		<div style="width: 50%; margin:0 auto;">
+		<h1 style="padding-left: 100px;">Gestionnaire d'Albums photo</h1>
+		<h:form>
+			<p:menubar>
+				<p:menuitem value="Ajouter un album" action="add-album.xhtml" />
+				<p:menuitem value="Liste des albums" action="list-album.xhtml" />
+				<p:menuitem value="Me déconnecter" action="#{appUserSession.logout()}" />
+			</p:menubar>
+		</h:form>
+		<h2>Exécuter une requête sur l'ensemble des photos </h2>
+		
+		<h:form>
+			<p:selectOneListbox value="#{pictureAnnotationController.requete}">
+				<f:selectItem itemLabel="Requête 1" itemValue="query1" />
+				<f:selectItem itemLabel="Requête 2" itemValue="query2" />
+				<f:selectItem itemLabel="Requête 3" itemValue="query3" />
+			</p:selectOneListbox>
+			<p:spacer height="30"/>
+			<p:commandButton value="Test Requete" action="#{pictureAnnotationController.testReq}"/>
+			
+			<p:commandButton value="Envoyer" />
+
+			
+		</h:form>
+
+		</div>
+	</h:body>
+</html>

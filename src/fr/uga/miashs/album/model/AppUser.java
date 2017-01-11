@@ -59,6 +59,9 @@ public class AppUser {
 	
 	@OneToMany(mappedBy="owner", cascade = CascadeType.ALL)
 	private List<Album> userAlbums;
+	
+	@OneToMany(mappedBy="owner")
+	private List<Album> sharedAlbums;
 
 	public AppUser() {
 	}

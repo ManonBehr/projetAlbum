@@ -1,6 +1,9 @@
 package fr.uga.miashs.album.control;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -11,8 +14,10 @@ import java.util.List;
 
 import javax.enterprise.context.*;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.annotation.PostConstruct;
 
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.TabChangeEvent;
@@ -21,6 +26,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 import fr.uga.miashs.album.model.Album;
+import fr.uga.miashs.album.model.AppUser;
 import fr.uga.miashs.album.model.Picture;
 import fr.uga.miashs.album.service.AlbumService;
 import fr.uga.miashs.album.service.PictureService;
@@ -44,7 +50,9 @@ public class AlbumController implements Serializable {
 	private Album currentAlbum;
 	private String albId;
 	
-	
+	public String getAlbumName(){
+		return currentAlbum.getTitle();
+	}
 	
 	public String getAlbId() {
 		return albId;
@@ -96,9 +104,13 @@ public class AlbumController implements Serializable {
 		System.out.println("alboum courant : " + currentAlbum.getId());
 	}
 	
-	public void upload(FileUploadEvent event) throws IOException {
+	
+	
+	public void upload(FileUploadEvent event) throws IOException, URISyntaxException {
 		String file_name = event.getFile().getFileName();
-		Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
+		
+		String s = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/photos/");
+		Path f = Paths.get(s, file_name);
 		OutputStream out = null;
 		InputStream in = null;
 		try {
@@ -118,47 +130,16 @@ public class AlbumController implements Serializable {
 			if (out != null)
 				out.close();
 		}
-		System.out.println("on upload, enfin ! ");
-		Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
+		String urlStr = "http://semanticweb.org/masterDCISS/projetAlbum#"+file_name;
+		URL url = new URL(urlStr);
+		URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+		Picture pict = new Picture("default_title", uri, f.toString(), file_name);
 		System.out.println(currentAlbum.getTitle() + "titre");
 		currentAlbum.addPicture(pict);
 		createPicture(pict, currentAlbum);
 		 	
 	}
-	
-//	public void upload() throws IOException {
-//		if(file != null){
-//			String file_name = file.getFileName();
-//			Path f = Paths.get("/home/manon/Bureau/workspace/ProjetAlbum2016/WebContent/resources/photos/", file_name);
-//			OutputStream out = null;
-//			InputStream in = null;
-//			try {
-//				 out = Files.newOutputStream(f);
-//				 in = file.getInputstream();
-//				 byte[] buf = new byte[512];
-//				 int nb = 0;
-//				 while ((nb = in.read(buf)) != -1)
-//					 out.write(buf, 0, nb);
-//				 
-//			} catch (NoSuchFileException e) {
-//				System.err.println("le fichier " + file_name + " n'existe pas");
-//			}
-//			finally {
-//				if (in != null)
-//					in.close();
-//				if (out != null)
-//					out.close();
-//			}
-//			Picture pict = new Picture("default_title", f.toUri(), f.toString(), file_name);
-//			//pict.setPictAlbum(currentAlbum);
-//			currentAlbum.addPicture(pict);
-//			createPicture(pict, currentAlbum);
-//			
-//		} 	
-//	}
-	
-
-	
+		
 	public List<Album> getListAlbumOwnedByCurrentUser() {
 		try {
 			return albumService.listAlbumOwnedBy(appUserSession.getConnectedUser());
@@ -182,13 +163,6 @@ public class AlbumController implements Serializable {
 			e.printStackTrace();
 		}
 		return null;
-//		List<String> pictName = new ArrayList<String>();
-//		pictName.add("tree.jpeg");
-//		pictName.add("squirrel.jpeg");
-//		pictName.add("pigs.jpg");
-//		pictName.add("cheval_meca.jpeg");
-//		return pictName;
 	}
-	
 	
 }

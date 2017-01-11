@@ -90,6 +90,8 @@ public class Album implements Serializable {
 		return sharedWith;
 	}
 
+	
+	
 	public Set<Picture> getPictures() {
 		return pictures;
 	}
@@ -100,6 +102,15 @@ public class Album implements Serializable {
 			picturesName.add(p.getFileName());
 		return picturesName;
 			
+	}
+	
+	public AppUser shareAlbum(AppUser user){
+		if(sharedWith == null)
+			sharedWith = new HashSet<AppUser>();
+		sharedWith.add(user);
+		for (AppUser a : sharedWith)
+			System.out.println("sharedWith : " + a.getFirstname());
+		return user;
 	}
 	
 	public Picture addPicture(Picture picture){
