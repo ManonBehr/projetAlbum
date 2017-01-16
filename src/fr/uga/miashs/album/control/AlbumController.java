@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.enterprise.context.*;
 import javax.faces.bean.ManagedBean;
@@ -29,6 +30,7 @@ import fr.uga.miashs.album.model.Album;
 import fr.uga.miashs.album.model.AppUser;
 import fr.uga.miashs.album.model.Picture;
 import fr.uga.miashs.album.service.AlbumService;
+import fr.uga.miashs.album.service.PictureAnnotationService;
 import fr.uga.miashs.album.service.PictureService;
 import fr.uga.miashs.album.service.ServiceException;
 import fr.uga.miashs.album.util.Pages;
@@ -40,7 +42,8 @@ public class AlbumController implements Serializable {
 
 	@Inject
 	private AppUserSession appUserSession;
-	
+	@Inject 
+	private PictureAnnotationService pictureAnnotationService;
 	@Inject
 	private AlbumService albumService;
 	@Inject
@@ -87,7 +90,6 @@ public class AlbumController implements Serializable {
 	}
 	
 	public void deleteAlbum(Album alb){
-		System.out.println("id de l'album Ã  supprimer : " + alb.getId());
 		albumService.delete(alb);
 	}
 	
@@ -101,9 +103,11 @@ public class AlbumController implements Serializable {
 	
 	public void setCurrentAlbum(Album alb) {
 		currentAlbum = alb;
-		System.out.println("alboum courant : " + currentAlbum.getId());
 	}
 	
+	public void insertPictureOntology(String uri){
+		pictureAnnotationService.insertPictureOntology(uri);
+	}
 	
 	
 	public void upload(FileUploadEvent event) throws IOException, URISyntaxException {
@@ -130,14 +134,15 @@ public class AlbumController implements Serializable {
 			if (out != null)
 				out.close();
 		}
-		String urlStr = "http://semanticweb.org/masterDCISS/projetAlbum#"+file_name;
+		String uuid = UUID.randomUUID().toString();
+		String urlStr = "http://www.semanticweb.org/masterDCISS/projetAlbum#"+uuid;
 		URL url = new URL(urlStr);
 		URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
 		Picture pict = new Picture("default_title", uri, f.toString(), file_name);
-		System.out.println(currentAlbum.getTitle() + "titre");
 		currentAlbum.addPicture(pict);
 		createPicture(pict, currentAlbum);
-		 	
+		insertPictureOntology(pict.getUri().toString());
+		System.out.println("photo ajoutée" + urlStr);		 	
 	}
 		
 	public List<Album> getListAlbumOwnedByCurrentUser() {
@@ -148,17 +153,17 @@ public class AlbumController implements Serializable {
 		}
 		return null;
 	}
-	public List<String> getListPictureOwnedByCurrentAlbum() {
+
+	public List<Picture> getListPictureOwnedByCurrentAlbum() {
 		try {
 			long id = Long.parseLong(albId);
 			List<Picture> allPictures = pictureService.listPictureOwnedBy(id);
 			//System.out.println("id de l'alb courant" + alb.getId());
-			List<String> pictName = new ArrayList<String>();
+			List<Picture> pictures = new ArrayList<Picture>();
 			for(int i=0; i<allPictures.size(); i++){
-				pictName.add(allPictures.get(i).getFileName());
-				System.out.println("photos de l'album courant : " + pictName.get(i));
+				pictures.add(allPictures.get(i));
 			}
-			return pictName;
+			return pictures;
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}

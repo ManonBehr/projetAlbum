@@ -117,8 +117,6 @@ public class Album implements Serializable {
 		if(pictures == null)
 			pictures = new HashSet<Picture>();
 		pictures.add(picture);
-		for (Picture p : pictures)
-			System.out.println("pictures : " + p.getLocalfile());
 		return picture;
 	}
 	

@@ -26,7 +26,7 @@ public class PictureService extends JpaService<Long, Picture>{
 		getEm().getTransaction().begin();
 		getEm().persist(p);
 		getEm().getTransaction().commit();
-		List<Picture> picturesIdToDelete = getPictureNull();
+//		List<Picture> picturesIdToDelete = getPictureNull();
 		updatePicture(p, a);
 //		for(int i=0; i<picturesIdToDelete.size(); i++)
 //			deletePicture(picturesIdToDelete.get(i).getId());
@@ -35,7 +35,6 @@ public class PictureService extends JpaService<Long, Picture>{
 	public void updatePicture(Picture p, Album a) {
 		EntityTransaction t = getEm().getTransaction();
 		Album alb = getAlbumById(a.getId());
-		System.out.println("id de a : "+a.getId());
 		t.begin();
 		p.setPictAlbum(alb);
 		System.out.println("update3");
@@ -60,10 +59,8 @@ public class PictureService extends JpaService<Long, Picture>{
 	}
 	
 	public Album getAlbumById(long albumId){
-		System.out.println("getAlbumById 1");
 		Query query = getEm().createQuery("SELECT a FROM Album a WHERE a.id="+albumId);
 		Album a =(Album) query.getSingleResult();
-		System.out.println("getAlbumById 2");
 		System.out.println("id de a 2 : "+a.getId());
 		return a;
 	}

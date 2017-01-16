@@ -59,7 +59,10 @@ public class Picture {
 		filename = nomfichier;
 	}
 
-
+	public URI getUri(){
+		return this.uri;
+	}
+	
 	public String getLocalfile() {
 		return localfile;
 	}
